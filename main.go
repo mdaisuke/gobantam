@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/mdaisuke/gobantam/lexer"
+	"github.com/mdaisuke/gobantam/token"
+)
 
 func main() {
 	// Function call.
@@ -43,5 +48,12 @@ func main() {
 }
 
 func test(source, expected string) {
-	fmt.Println(source, expected)
+	fmt.Println(source)
+
+	l := lexer.New(source)
+	tok := l.NextToken()
+	for tok.Type != token.EOF {
+		fmt.Println(tok)
+		tok = l.NextToken()
+	}
 }

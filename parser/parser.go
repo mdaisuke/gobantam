@@ -1,0 +1,13 @@
+package parser
+
+const (
+	_ = iota
+	ASSIGNMENT
+	CONDITIONAL
+	SUM
+	PRODUCT
+	EXPONENT
+	PREFIX
+	POSTFIX
+	CALL
+)
