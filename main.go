@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mdaisuke/gobantam/lexer"
-	"github.com/mdaisuke/gobantam/token"
+	"github.com/mdaisuke/gobantam/parser"
 )
 
 func main() {
@@ -48,12 +48,7 @@ func main() {
 }
 
 func test(source, expected string) {
-	fmt.Println(source)
-
 	l := lexer.New(source)
-	tok := l.NextToken()
-	for tok.Type != token.EOF {
-		fmt.Println(tok)
-		tok = l.NextToken()
-	}
+	p := parser.New(l)
+	fmt.Println(p.Parse())
 }
