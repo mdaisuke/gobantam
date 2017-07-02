@@ -37,3 +37,32 @@ func (p *Parser) groupParselet() ast.Expression {
 
 	return exp
 }
+
+func (p *Parser) prefixOperatorParselet() ast.Expression {
+	exp := &PrefixExpression{Operator: p.curToken}
+
+	p.nextToken()
+
+	right := p.parseExpression()
+	exp.Right = right
+
+	return exp
+}
+
+func (p *Parser) callParselet(left ast.Expression) ast.Expression {
+	args := []ast.Expression{}
+	p.nextToken()
+
+	for p.curToken.Type != token.RPAREN {
+		arg := p.parseExpression()
+		args = append(args, arg)
+		if p.curToken.Type == token.COMMA {
+			p.nextToken()
+		}
+	}
+
+	return &CallExpression{
+		Function: left,
+		Args:     args,
+	}
+}
