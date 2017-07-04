@@ -7,6 +7,18 @@ import (
 	"github.com/mdaisuke/gobantam/lexer"
 )
 
+const (
+	_ = iota
+	ASSIGNMENT
+	CONDITIONAL
+	SUM
+	PRODUCT
+	EXPONENT
+	PREFIX
+	POSTFIX
+	CALL
+)
+
 type (
 	prefixParselet func() ast.Expression
 	infixParselet  func(ast.Expression) ast.Expression
@@ -65,4 +77,33 @@ func (p *Parser) callParselet(left ast.Expression) ast.Expression {
 		Function: left,
 		Args:     args,
 	}
+}
+
+func (p *Parser) assignParselet(left ast.Expression) ast.Expression {
+	right := p.parseExpression(ASSIGNMENT - 1)
+
+	return &AssignExpression{
+		Name:  left.Name,
+		Right: right,
+	}
+}
+
+func (p *Parser) conditionalParselet(left ast.Expression) ast.Expression {
+	thenArm := p.parseExpression()
+	p.nextToken()
+	elseArm := p.parseExpression(CONDITIONAL - 1)
+
+	return &ConditionalExpression{
+		Condition: left,
+		ThenArm:   thenArm,
+		ElseArm:   elseArm,
+	}
+}
+
+func (p *Parser) binaryOperatorParselet(left ast.Expression) ast.Expression {
+
+}
+
+func (p *Parser) postfixOperatorParselet(left ast.Expression) ast.Expression {
+
 }
